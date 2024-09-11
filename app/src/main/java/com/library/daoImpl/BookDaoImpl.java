@@ -2,6 +2,7 @@ package com.library.daoImpl;
 
 import com.library.dao.BookDAO;
 import com.library.model.Book;
+import com.library.model.Magazine;
 import com.library.utils.db.DbConnection;
 
 import java.sql.*;
@@ -17,7 +18,26 @@ public class BookDaoImpl implements BookDAO {
     }
 
     public HashMap<String, Book> getAll() {
-        return null;
+        String query = "SELECT * FROM books";
+        HashMap<String, Book> books = new HashMap<>();
+        try {
+            Statement statement = cn.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                Book book = new Book(
+                        resultSet.getString("title"),
+                        resultSet.getString("author"),
+                        resultSet.getDate("pub_date").toLocalDate(),
+                        resultSet.getInt("num_pages"),
+                        resultSet.getString("isbn")
+                );
+                book.setId(resultSet.getString("id"));
+                books.put("BOOK_" + book.getId(), book);
+            }
+        } catch (SQLException e) {
+            System.out.println("[-] SQL error: " + e);
+        }
+        return books;
     }
 
     public void create(Book book) {
