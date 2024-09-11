@@ -2,10 +2,10 @@ package com.library.dao;
 
 import com.library.model.*;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface DocumentDAO {
-    public ArrayList<Document> getAll();
+    public HashMap<String, Document> getAll();
 
     public void get(String id);
 
