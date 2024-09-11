@@ -15,11 +15,7 @@ public class ScientificJournal extends Document {
     public void _return(){};
     @Override
     public void display() {
-        System.out.println("Title: " + getTitle());
-        System.out.println("Author: " + getAuthor());
-        System.out.println("Publication Date: " + getPubDate());
-        System.out.println("Number of Pages: " + getNumPages());
-        System.out.println("Impact Factor: " + impactFactor);
+        System.out.println("Journal  -> ID: " + getId() + " | Title: " + getTitle() + " | Author: " + getAuthor() + " | Pub Date: " + getPubDate() + " | Num of Pages: " + getNumPages() + " | Impact Factor: " + getImpactFactor());;
     }
 
     public double getImpactFactor() {

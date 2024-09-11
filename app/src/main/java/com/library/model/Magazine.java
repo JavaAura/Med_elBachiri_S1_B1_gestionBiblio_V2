@@ -23,6 +23,6 @@ public class Magazine extends Document {
     }
 
     public void display() {
-
+        System.out.println("Magazine -> ID: " + getId() + " | Title: " + getTitle() + " | Author: " + getAuthor() + " | Pub Date: " + getPubDate() + " | Num of Pages: " + getNumPages() + " | Number: " + getNumber());
     }
 }

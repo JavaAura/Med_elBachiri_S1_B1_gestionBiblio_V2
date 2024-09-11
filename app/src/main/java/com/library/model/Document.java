@@ -18,10 +18,15 @@ public abstract class Document implements Borrowable {
         this.numPages = numPages;
         this.borrowed = false;
     }
+
     public abstract void borrow();
     public abstract void _return();
     public abstract void display();
 
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getId(){
         return this.id;

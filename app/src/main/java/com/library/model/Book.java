@@ -22,7 +22,7 @@ public class Book extends Document implements Bookable {
     }
 
     public void display() {
-
+        System.out.println("Book     -> ID: " + getId() + " | Title: " + getTitle() + " | Author: " + getAuthor() + " | Pub Date: " + getPubDate() + " | Num of Pages: " + getNumPages() + " | ISBN: " + getIsbn());
     }
 
     @Override

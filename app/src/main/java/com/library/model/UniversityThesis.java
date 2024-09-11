@@ -11,6 +11,10 @@ public class UniversityThesis extends Document {
         this.degreeProgram = degreeProgram;
     }
 
+    public String getDegreeProgram() {
+        return degreeProgram;
+    }
+
     public void borrow() {
 
     }
@@ -21,6 +25,6 @@ public class UniversityThesis extends Document {
 
 
     public void display() {
-
+        System.out.println("Thesis   -> ID: " + getId() + " | Title: " + getTitle() + " | Author: " + getAuthor() + " | Pub Date: " + getPubDate() + " | Num of Pages: " + getNumPages() + " | Degree Program: " + getDegreeProgram());;
     }
 }

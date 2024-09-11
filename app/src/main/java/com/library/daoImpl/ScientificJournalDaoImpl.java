@@ -29,7 +29,8 @@ public class ScientificJournalDaoImpl implements ScientificJournalDAO {
                         resultSet.getInt("num_pages"),
                         resultSet.getInt("impact_factor")
                 );
-                journals.put(resultSet.getString("id"), journal);
+                journal.setId(resultSet.getString("id"));
+                journals.put("SJ" + journal.getId(), journal);
             }
         } catch (SQLException e) {
             System.out.println("[-] SQL error: " + e);

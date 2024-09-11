@@ -27,7 +27,8 @@ public class MagazineDaoImpl implements MagazineDAO {
                         resultSet.getInt("num_pages"),
                         resultSet.getInt("number")
                 );
-                magazines.put(resultSet.getString("id"), magazine);
+                magazine.setId(resultSet.getString("id"));
+                magazines.put("MAGAZINE_" + magazine.getId(), magazine);
             }
         } catch (SQLException e) {
             System.out.println("[-] SQL error: " + e);

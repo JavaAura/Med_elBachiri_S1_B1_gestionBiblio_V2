@@ -2,14 +2,38 @@ package com.library.daoImpl;
 
 import com.library.dao.DocumentDAO;
 import com.library.model.*;
+import com.library.utils.UI;
+import com.library.utils.db.DbConnection;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DocumentDaoImpl implements DocumentDAO {
-    @Override
-    public ArrayList<Document> getAll() {
 
-        return null;
+    private Connection cn;
+    private HashMap<String, Document> docs;
+
+    private BookDaoImpl bookDao = new BookDaoImpl();
+    private MagazineDaoImpl magazineDao = new MagazineDaoImpl();
+    private ScientificJournalDaoImpl scientificJournalDao = new ScientificJournalDaoImpl();
+    private UniversityThesisDaoImpl universityThesisDao = new UniversityThesisDaoImpl();
+
+    public DocumentDaoImpl(){
+        this.cn = DbConnection.connect();
+        this.docs = new HashMap<String, Document>();
+    }
+
+    @Override
+    public HashMap<String, Document> getAll() {
+        docs.putAll(bookDao.getAll());
+        docs.putAll(magazineDao.getAll());
+        docs.putAll(scientificJournalDao.getAll());
+        docs.putAll(universityThesisDao.getAll());
+        return docs;
     }
 
     @Override

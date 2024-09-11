@@ -46,13 +46,16 @@ public class DocumentMenu {
 
     private static void add() {
        library.addDocument();
+       display();
     }
 
     private static void viewAll(){
-
+        library.viewAllDocs();
+        display();
     }
     private static void search(){
-
+        library.search();
+        display();
     }
     private static void delete(){
 
