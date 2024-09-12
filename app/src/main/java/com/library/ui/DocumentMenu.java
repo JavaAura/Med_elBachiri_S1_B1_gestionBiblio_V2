@@ -28,17 +28,19 @@ public class DocumentMenu {
         }
         switch (choice) {
             case "1":
-//                UI.clear();
+                UI.clear();
                 add();
                 break;
             case "2":
-//                UI.clear();
+                UI.clear();
                 viewAll();
                 break;
             case "3":
+                UI.clear();
                 search();
                 break;
             case "4":
+                UI.clear();
                 delete();
                 break;
             case "5":

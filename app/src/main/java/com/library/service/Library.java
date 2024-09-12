@@ -25,8 +25,8 @@ public class Library {
     }
 
     public void addDocument() {
+//        UI.clear();
         int choice =  getDocType();
-//        scanner.nextLine();
         System.out.println("Enter Title: ");
         String title = scanner.nextLine();
         System.out.println("Enter Author: ");
@@ -162,6 +162,7 @@ public class Library {
 
     private static int getDocType() {
         while (true) {
+            UI.clear();
             System.out.println("Choose the type of the document: ");
             System.out.println("1. Book");
             System.out.println("2. Magazine");

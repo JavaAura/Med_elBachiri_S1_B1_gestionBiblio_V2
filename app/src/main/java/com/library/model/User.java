@@ -1,19 +1,20 @@
 package com.library.model;
 
 public abstract class User {
-    private String id;
+    private int id;
     private String name;
     private String email;
     private int age;
 
-    public User(String id, String name, String email, int age){
-        this.id = id;
+    public User(String name, String email, int age){
         this.email = email;
         this.name = name;
         this.age = age;
     }
 
-    public String getId() {
+    public abstract void display();
+
+    public int getId() {
         return id;
     }
 
@@ -29,15 +30,7 @@ public abstract class User {
         return email;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(int id){
+        this.id = id;
     }
 }

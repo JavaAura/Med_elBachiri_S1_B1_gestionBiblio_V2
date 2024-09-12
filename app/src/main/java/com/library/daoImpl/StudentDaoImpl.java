@@ -5,7 +5,7 @@ import com.library.model.Student;
 import com.library.utils.db.DbConnection;
 
 import java.sql.*;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class StudentDaoImpl implements StudentDAO {
 
@@ -16,20 +16,20 @@ public class StudentDaoImpl implements StudentDAO {
     }
 
     @Override
-    public HashMap<String, Student> getAll() {
-        HashMap<String, Student> students = new HashMap<>();
+    public ArrayList<Student> getAll() {
+        ArrayList<Student> students = new ArrayList<Student>();
         String query = "SELECT * FROM students";
         try (PreparedStatement preparedStatement = cn.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 Student student = new Student(
-                        resultSet.getString("id"),
                         resultSet.getString("name"),
                         resultSet.getString("email"),
                         resultSet.getInt("age"),
                         resultSet.getDate("integration_date").toLocalDate()
                 );
-                students.put(resultSet.getString("id"), student);
+                student.setId(resultSet.getInt("id"));
+                students.add(student);
             }
         } catch (SQLException e) {
             System.out.println("[-] SQL error: " + e);
@@ -41,16 +41,17 @@ public class StudentDaoImpl implements StudentDAO {
     public Student get(String id) {
         String query = "SELECT * FROM students WHERE id = ?";
         try (PreparedStatement preparedStatement = cn.prepareStatement(query)) {
-            preparedStatement.setString(1, id);
+            preparedStatement.setInt(1, Integer.parseInt(id));
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return new Student(
-                            resultSet.getString("id"),
+
+                    Student student = new Student(
                             resultSet.getString("name"),
                             resultSet.getString("email"),
                             resultSet.getInt("age"),
-                            resultSet.getDate("integration_date").toLocalDate()
-                    );
+                            resultSet.getDate("integration_date").toLocalDate());
+                    student.setId(resultSet.getInt("id"));
+                    return student;
                 }
             }
         } catch (SQLException e) {
@@ -61,13 +62,12 @@ public class StudentDaoImpl implements StudentDAO {
 
     @Override
     public void create(Student student) {
-        String query = "INSERT INTO students (id, name, email, age, integration_date) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO students (name, email, age, integration_date) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preStm = cn.prepareStatement(query)) {
-            preStm.setString(1, student.getId());
-            preStm.setString(2, student.getName());
-            preStm.setString(3, student.getEmail());
-            preStm.setInt(4, student.getAge());
-            preStm.setDate(5, Date.valueOf(student.getIntegrationDate()));
+            preStm.setString(1, student.getName());
+            preStm.setString(2, student.getEmail());
+            preStm.setInt(3, student.getAge());
+            preStm.setDate(4, Date.valueOf(student.getIntegrationDate()));
             preStm.executeUpdate();
             System.out.println("[+] Student added.");
         } catch (SQLException e) {
@@ -76,10 +76,10 @@ public class StudentDaoImpl implements StudentDAO {
     }
 
     @Override
-    public void delete(Student student) {
+    public void delete(String id) {
         String query = "DELETE FROM students WHERE id = ?";
         try (PreparedStatement preparedStatement = cn.prepareStatement(query)) {
-            preparedStatement.setString(1, student.getId());
+            preparedStatement.setInt(1, Integer.parseInt(id));
             preparedStatement.executeUpdate();
             System.out.println("[+] Student deleted.");
         } catch (SQLException e) {
@@ -95,7 +95,7 @@ public class StudentDaoImpl implements StudentDAO {
             prestm.setString(2, student.getEmail());
             prestm.setInt(3, student.getAge());
             prestm.setDate(4, Date.valueOf(student.getIntegrationDate()));
-            prestm.setString(5, student.getId());
+            prestm.setInt(5, student.getId());
             prestm.executeUpdate();
             System.out.println("[+] Student updated.");
         } catch (SQLException e) {

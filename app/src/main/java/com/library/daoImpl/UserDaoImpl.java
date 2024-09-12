@@ -10,9 +10,17 @@ import java.util.HashMap;
 
 public class UserDaoImpl implements UserDAO {
 
-    private StudentDaoImpl studentDao = new StudentDaoImpl();
-    private ProfessorDaoImpl professorDao = new ProfessorDaoImpl();
+    private static StudentDaoImpl studentDao = new StudentDaoImpl();
+    private static ProfessorDaoImpl professorDao = new ProfessorDaoImpl();
+    private static ArrayList<User> users = new ArrayList<User>();
 
+    @Override
+    public ArrayList<User> getAll() {
+        users.clear();
+        users.addAll(studentDao.getAll());
+        users.addAll(professorDao.getAll());
+        return users;
+    }
 
     @Override
     public void create(Student student) {
@@ -35,12 +43,13 @@ public class UserDaoImpl implements UserDAO {
     }
 
     @Override
-    public void delete(Student student) {
-        studentDao.delete(student);
-    }
-
-    @Override
-    public void delete(Professor professor) {
-        professorDao.delete(professor);
+    public void delete(String id, int userType) {
+        switch (userType){
+            case 1:
+                studentDao.delete(id);
+                break;
+            case 2:
+                professorDao.delete(id);
+        }
     }
 }

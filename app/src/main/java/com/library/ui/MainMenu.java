@@ -11,6 +11,7 @@ public class MainMenu {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void display() {
+        UI.clear();
         System.out.println("===== Library Management System =====");
         System.out.println("1. Manage Documents");
         System.out.println("2. Manage Users");
@@ -26,7 +27,7 @@ public class MainMenu {
             }
             switch (choice) {
                 case "1":
-//                UI.clear();
+                UI.clear();
                     DocumentMenu.display();
                     break;
                 case "2":
