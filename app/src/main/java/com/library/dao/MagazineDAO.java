@@ -8,6 +8,6 @@ public interface MagazineDAO {
     public HashMap<String, Magazine> getAll();
     public Magazine get(String id);
     public void create(Magazine magazine);
-    public void delete(Magazine magazine);
+    public void delete(String id);
     public void update(Magazine magazine);
 }

@@ -6,7 +6,7 @@ import java.sql.Statement;
 
 public class Tables {
     // create all tables at once
-    public static void create(Connection connection){
+    public static void create(Connection connection) {
         create_documents_table(connection);
         create_books_table(connection);
         create_magazines_table(connection);
@@ -49,44 +49,49 @@ public class Tables {
     private static void create_books_table(Connection cn) {
         dynamic_create_table(cn,
                 "books",
-                "isbn TEXT) INHERITS (documents"
+                "isbn TEXT, document_id INT REFERENCES documents(id)) INHERITS (documents"
         );
     }
 
     private static void create_magazines_table(Connection cn) {
         dynamic_create_table(cn,
                 "magazines",
-                "number INT) INHERITS (documents"
-        );
-    }
-    private static void create_scientific_journals_table(Connection cn) {
-        dynamic_create_table(cn,
-                "scientific_journals",
-                "impact_factor BIGINT) INHERITS (documents"
-        );
-    }
-    private static void create_university_thesis_table(Connection cn) {
-        dynamic_create_table(cn,
-                "university_thesis",
-                "degree_program TEXT) INHERITS (documents"
+                "number INT, document_id INT REFERENCES documents(id)) INHERITS (documents"
         );
     }
 
-    private static void create_users_table(Connection cn){
+    private static void create_scientific_journals_table(Connection cn) {
+        dynamic_create_table(cn,
+                "scientific_journals",
+                "impact_factor BIGINT, document_id INT REFERENCES documents(id)) INHERITS (documents"
+        );
+    }
+
+    private static void create_university_thesis_table(Connection cn) {
+        dynamic_create_table(cn,
+                "university_thesis",
+                "degree_program TEXT, document_id INT REFERENCES documents(id)) INHERITS (documents"
+        );
+    }
+
+    private static void create_users_table(Connection cn) {
         dynamic_create_table(cn,
                 "users",
-                "name VARCHAR(60), email VARCHAR(255), age int"
+                "name VARCHAR(60), email VARCHAR(255), age INT"
         );
     }
-    private static void create_students_table(Connection cn){
+
+    private static void create_students_table(Connection cn) {
         dynamic_create_table(cn,
                 "students",
-                "integration_date DATE) INHERITS (users"
+                "integration_date DATE, user_id INT REFERENCES users(id)) INHERITS (users"
         );
     }
-    private static void create_professors_table(Connection cn){
+
+    private static void create_professors_table(Connection cn) {
         dynamic_create_table(cn,
                 "professors",
-                "department text) INHERITS (users");
+                "department TEXT, user_id INT REFERENCES users(id)) INHERITS (users"
+        );
     }
 }

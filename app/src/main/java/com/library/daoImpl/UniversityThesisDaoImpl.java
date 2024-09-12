@@ -85,10 +85,10 @@ public class UniversityThesisDaoImpl implements UniversityThesisDAO {
     }
 
     @Override
-    public void delete(UniversityThesis universityThesis) {
+    public void delete(String id) {
         String query = "DELETE FROM university_thesis WHERE id = ?";
         try (PreparedStatement preparedStatement = cn.prepareStatement(query)) {
-            preparedStatement.setString(1, universityThesis.getId());
+            preparedStatement.setInt(1, Integer.parseInt(id));
             preparedStatement.executeUpdate();
             System.out.println("[+] University Thesis deleted.");
         } catch (SQLException e) {

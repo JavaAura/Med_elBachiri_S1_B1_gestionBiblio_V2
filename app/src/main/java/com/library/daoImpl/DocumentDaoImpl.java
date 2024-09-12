@@ -19,8 +19,8 @@ public class DocumentDaoImpl implements DocumentDAO {
 
     private BookDaoImpl bookDao = new BookDaoImpl();
     private MagazineDaoImpl magazineDao = new MagazineDaoImpl();
-    private ScientificJournalDaoImpl scientificJournalDao = new ScientificJournalDaoImpl();
-    private UniversityThesisDaoImpl universityThesisDao = new UniversityThesisDaoImpl();
+    private ScientificJournalDaoImpl scJouDao = new ScientificJournalDaoImpl();
+    private UniversityThesisDaoImpl uniTheDao = new UniversityThesisDaoImpl();
 
     public DocumentDaoImpl(){
         this.cn = DbConnection.connect();
@@ -31,85 +31,95 @@ public class DocumentDaoImpl implements DocumentDAO {
     public HashMap<String, Document> getAll() {
         docs.putAll(bookDao.getAll());
         docs.putAll(magazineDao.getAll());
-        docs.putAll(scientificJournalDao.getAll());
-        docs.putAll(universityThesisDao.getAll());
+        docs.putAll(scJouDao.getAll());
+        docs.putAll(uniTheDao.getAll());
         return docs;
     }
 
     @Override
-    public void get(String id) {
+    public void get(String id, int docType) {
+        switch (docType){
+            case 1:
+                Book book = bookDao.get(id);
+                if (book != null) book.display(); else System.out.println("[-] Book Not found.");
+                break;
+            case 2:
+                Magazine magazine = magazineDao.get(id);
+                if (magazine != null) magazine.display(); else System.out.println("[-] Magazine Not found.");
+                break;
+            case 3:
+                ScientificJournal scJou = scJouDao.get(id);
+                if (scJou != null) scJou.display(); else System.out.println("[-] Journal Not found.");
+                break;
+            case 4:
+                UniversityThesis uniThe = uniTheDao.get(id);
+                if (uniThe != null) uniThe.display(); else System.out.println("[-] Thesis Not found.");
+                break;
+            default:
+                System.out.println("Invalid choice, Try again.");
+                break;
+        }
 
     }
 
     @Override
     public void create(Book book) {
-        BookDaoImpl bookDao = new BookDaoImpl();
         bookDao.create(book);
     }
 
     @Override
     public void create(Magazine magazine) {
-        MagazineDaoImpl magazineDao = new MagazineDaoImpl();
         magazineDao.create(magazine);
     }
 
     @Override
     public void create(ScientificJournal scientificJournal) {
-        ScientificJournalDaoImpl scJouDao = new ScientificJournalDaoImpl();
         scJouDao.create(scientificJournal);
     }
 
     @Override
     public void create(UniversityThesis universityThesis) {
-        UniversityThesisDaoImpl uniTheDao = new UniversityThesisDaoImpl();
         uniTheDao.create(universityThesis);
     }
     @Override
-    public void delete(Book book) {
-        BookDaoImpl bookDao = new BookDaoImpl();
-        bookDao.delete(book);
-    }
-
-    @Override
-    public void delete(Magazine magazine) {
-        MagazineDaoImpl magazineDao = new MagazineDaoImpl();
-        magazineDao.delete(magazine);
-    }
-
-    @Override
-    public void delete(ScientificJournal scientificJournal) {
-        ScientificJournalDaoImpl scJouDao = new ScientificJournalDaoImpl();
-        scJouDao.delete(scientificJournal);
-    }
-
-    @Override
-    public void delete(UniversityThesis universityThesis) {
-        UniversityThesisDaoImpl uniTheDao = new UniversityThesisDaoImpl();
-        uniTheDao.delete(universityThesis);
+    public void delete(String id, int docType) {
+        switch (docType){
+            case 1:
+                bookDao.delete(id);
+                break;
+            case 2:
+                magazineDao.delete(id);
+                break;
+            case 3:
+                scJouDao.delete(id);
+                break;
+            case 4:
+                uniTheDao.delete(id);
+                break;
+            default:
+                System.out.println("Invalid choice, try again.");
+                break;
+        }
     }
 
 
     @Override
     public void update(Book book) {
-        BookDaoImpl bookDao = new BookDaoImpl();
         bookDao.update(book);
     }
 
     @Override
     public void update(Magazine magazine) {
-        MagazineDaoImpl magazineDao = new MagazineDaoImpl();
         magazineDao.update(magazine);
     }
 
     @Override
     public void update(ScientificJournal scientificJournal) {
-        ScientificJournalDaoImpl scJouDao = new ScientificJournalDaoImpl();
         scJouDao.update(scientificJournal);
     }
 
     @Override
     public void update(UniversityThesis universityThesis) {
-        UniversityThesisDaoImpl uniTheDao = new UniversityThesisDaoImpl();
         uniTheDao.update(universityThesis);
     }
 

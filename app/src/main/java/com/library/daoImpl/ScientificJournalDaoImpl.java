@@ -77,10 +77,10 @@ public class ScientificJournalDaoImpl implements ScientificJournalDAO {
     }
 
     @Override
-    public void delete(ScientificJournal scJou) {
+    public void delete(String id) {
         String query = "DELETE FROM scientific_journals WHERE id = ?";
         try (PreparedStatement prestm = cn.prepareStatement(query)) {
-            prestm.setString(1, scJou.getId());
+            prestm.setInt(1, Integer.parseInt(id));
             prestm.executeUpdate();
             System.out.println("[+] Scientific Journal deleted.");
         } catch (SQLException e) {

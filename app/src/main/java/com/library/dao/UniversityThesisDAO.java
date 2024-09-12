@@ -7,6 +7,6 @@ public interface UniversityThesisDAO {
     public HashMap<String, UniversityThesis> getAll();
     public UniversityThesis get(String id);
     public void create(UniversityThesis universityThesis);
-    public void delete(UniversityThesis universityThesis);
+    public void delete(String id);
     public void update(UniversityThesis universityThesis);
 }

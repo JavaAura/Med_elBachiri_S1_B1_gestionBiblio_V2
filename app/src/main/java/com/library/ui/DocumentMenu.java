@@ -1,6 +1,7 @@
 package com.library.ui;
 
 import com.library.service.Library;
+import com.library.utils.InputValidator;
 import com.library.utils.UI;
 
 
@@ -15,27 +16,32 @@ public class DocumentMenu {
         System.out.println("===== Document Management =====");
         System.out.println("1. Add Document");
         System.out.println("2. View All Documents");
-        System.out.println("3. Search Document by Title");
+        System.out.println("3. Search Document ");
         System.out.println("4. Delete Document");
         System.out.println("5. Back to Main Menu");
 
-        int choice = scanner.nextInt();
+        String choice = scanner.nextLine();
+        if (!InputValidator.isValidNumber(choice)) {
+            System.out.println("Invalid choice, try again.");
+            display();
+            return;
+        }
         switch (choice) {
-            case 1:
+            case "1":
 //                UI.clear();
                 add();
                 break;
-            case 2:
+            case "2":
 //                UI.clear();
                 viewAll();
                 break;
-            case 3:
+            case "3":
                 search();
                 break;
-            case 4:
+            case "4":
                 delete();
                 break;
-            case 5:
+            case "5":
                 MainMenu.display();
                 return;
             default:
@@ -58,6 +64,7 @@ public class DocumentMenu {
         display();
     }
     private static void delete(){
-
+        library.delete();
+        display();
     }
 }

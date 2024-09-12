@@ -58,11 +58,11 @@ public class MagazineDaoImpl implements MagazineDAO {
         }
     }
 
-    public void delete(Magazine magazine) {
+    public void delete(String id) {
         String query = "DELETE FROM magazines WHERE id = ?";
         try {
             PreparedStatement preparedStatement = cn.prepareStatement(query);
-            preparedStatement.setString(1, magazine.getId());
+            preparedStatement.setInt(1, Integer.parseInt(id));
             preparedStatement.executeUpdate();
             System.out.println("[+] Magazine deleted.");
         } catch (SQLException e) {

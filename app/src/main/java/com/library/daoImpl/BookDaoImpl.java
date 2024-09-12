@@ -61,7 +61,7 @@ public class BookDaoImpl implements BookDAO {
         String query = "SELECT * FROM books WHERE id = ?";
         try {
             PreparedStatement preparedStatement = cn.prepareStatement(query);
-            preparedStatement.setString(1, id);
+            preparedStatement.setInt(1, Integer.parseInt(id));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return new Book(
@@ -79,10 +79,10 @@ public class BookDaoImpl implements BookDAO {
     }
 
 
-    public void delete(Book book) {
+    public void delete(String id) {
         String query = "DELETE FROM books WHERE id = ?";
         try (PreparedStatement preStm = cn.prepareStatement(query)) {
-            preStm.setString(1, book.getId());
+            preStm.setInt(1, Integer.parseInt(id));
             preStm.executeUpdate();
             System.out.println("[+] Book deleted.");
         } catch (SQLException e){

@@ -8,6 +8,6 @@ public interface BookDAO {
     public HashMap<String, Book> getAll();
     public Book get(String id);
     public void create(Book book);
-    public void delete(Book book);
+    public void delete(String id);
     public void update(Book book);
 }

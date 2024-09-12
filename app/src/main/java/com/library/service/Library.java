@@ -5,6 +5,7 @@ import com.library.daoImpl.DocumentDaoImpl;
 import com.library.model.*;
 import com.library.ui.MainMenu;
 import com.library.utils.DateUtils;
+import com.library.utils.InputValidator;
 import com.library.utils.UI;
 
 import java.time.LocalDate;
@@ -25,7 +26,7 @@ public class Library {
 
     public void addDocument() {
         int choice =  getDocType();
-        scanner.nextLine();
+//        scanner.nextLine();
         System.out.println("Enter Title: ");
         String title = scanner.nextLine();
         System.out.println("Enter Author: ");
@@ -40,34 +41,44 @@ public class Library {
         System.out.println("Enter number of pages: ");
         String numPages = scanner.nextLine();
 
+        try {
+            int pages = Integer.parseInt(numPages);
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter ISBN: ");
+                    String isbn = scanner.nextLine();
+                    Book book = new Book(title, author, date, pages, isbn);
+                    docDao.create(book);
+                break;
+                case 2:
+                    System.out.println("Enter Number: ");
+                    String number = scanner.nextLine();
+                    if (InputValidator.isValidNumber(number)){
+                        Magazine magazine = new Magazine(title, author, date, pages, Integer.parseInt(number));
+                        docDao.create(magazine);
+                    } else System.out.println("Invalid number format, Try again.");
+                break;
+                case 3:
+                    System.out.println("Enter Impact Factor: ");
+                    String impactFactor = scanner.nextLine();
+                    if (InputValidator.isValidDouble(impactFactor)){
+                        ScientificJournal scJou = new ScientificJournal(title, author, date, pages, Double.parseDouble(impactFactor));
+                        docDao.create(scJou);
+                    } else System.out.println("Invalid number format, Try again.");
+                break;
+                case 4:
+                    System.out.println("Enter Degree Program : ");
+                    String degreeProgram = scanner.nextLine();
+                    UniversityThesis uniThe = new UniversityThesis(title, author, date,pages, degreeProgram);
+                    docDao.create(uniThe);
+                break;
 
-        switch (choice) {
-            case 1:
-                System.out.println("Enter ISBN: ");
-                String isbn = scanner.nextLine();
-                Book book = new Book(title, author, date, Integer.parseInt(numPages), isbn);
-                docDao.create(book);
-            break;
-            case 2:
-                System.out.println("Enter Number: ");
-                String number = scanner.nextLine();
-                Magazine magazine = new Magazine(title, author, date, Integer.parseInt(numPages), Integer.parseInt(number));
-                docDao.create(magazine);
-            break;
-            case 3:
-                System.out.println("Enter Impact Factor: ");
-                String impactFactor = scanner.nextLine();
-                ScientificJournal scJou = new ScientificJournal(title, author, date, Integer.parseInt(numPages), Double.parseDouble(impactFactor));
-                docDao.create(scJou);
-            break;
-            case 4:
-                System.out.println("Enter Degree Program : ");
-                String degreeProgram = scanner.nextLine();
-                UniversityThesis uniThe = new UniversityThesis(title, author, date, Integer.parseInt(numPages), degreeProgram);
-                docDao.create(uniThe);
-            break;
+            }
 
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number format, Try again.");
         }
+
 
     }
 
@@ -85,31 +96,38 @@ public class Library {
     }
 
     public void search(){
-        int choice = getSearchType();
-        scanner.nextLine();
-        switch (choice){
-            case 1:
-                System.out.println("Enter Title: ");
-                String title = scanner.nextLine();
-                searchByTitle(title).forEach(Document::display);
-                break;
-            case 2:
-                System.out.println("Enter Author: ");
-                String author = scanner.nextLine();
-                searchByAuthor(author).forEach(Document::display);
-                break;
-            case 3:
-                System.out.println("Enter ID: ");
-                String id = scanner.nextLine();
-                searchByID(id);
-                break;
-            case 4:
-                MainMenu.display();
-                return;
-            default:
-                System.out.println("Invalid choice, Try again.");
+        try {
+            int choice = getSearchType();
+            scanner.nextLine();
+            switch (choice){
+                case 1:
+                    System.out.println("Enter Title: ");
+                    String title = scanner.nextLine();
+                    searchByTitle(title).forEach(Document::display);
+                    break;
+                case 2:
+                    System.out.println("Enter Author: ");
+                    String author = scanner.nextLine();
+                    searchByAuthor(author).forEach(Document::display);
+                    break;
+                case 3:
+                    System.out.println("Enter ID: ");
+                    String id = scanner.nextLine();
+                    if (InputValidator.isValidNumber(id)){
+                        searchByID(id);
+                    } else System.out.println("Invalid number format, Try again.");
+                    break;
+                case 4:
+                    MainMenu.display();
+                    return;
+                default:
+                    System.out.println("Invalid choice, Try again.");
 
+            }
+        } catch (NumberFormatException e){
+            System.out.println("Invalid number format, Try again.");
         }
+
     }
 
     private static List<Document> searchByTitle(String query) {
@@ -123,17 +141,44 @@ public class Library {
                 .collect(Collectors.toList());
     }
     private static void searchByID(String id){
-        docDao.get(id);
+        int docType = getDocType();
+        if (docType == 1 || docType == 2 || docType == 3 || docType ==4){
+            docDao.get(id, docType);
+        } else {
+            System.out.println("Invalid option, try again.");
+        }
     }
 
-    private static int getDocType(){
-        System.out.println("Choose the type of the document : ");
-        System.out.println("1. Book");
-        System.out.println("2. Magazine");
-        System.out.println("3. Scientific Journal");
-        System.out.println("4. University Thesis");
-        return scanner.nextInt();
+    public void delete(){
+        int choice = getDocType();
+        System.out.println("Enter ID: ");
+        String id = scanner.nextLine();
+        if (InputValidator.isValidNumber(id)){
+            docDao.delete(id, choice);
+        } else {
+            System.out.println("Invalid input, try again.");
+        }
     }
+
+    private static int getDocType() {
+        while (true) {
+            System.out.println("Choose the type of the document: ");
+            System.out.println("1. Book");
+            System.out.println("2. Magazine");
+            System.out.println("3. Scientific Journal");
+            System.out.println("4. University Thesis");
+
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+                if (choice >= 1 && choice <= 4) return choice; else System.out.println("Invalid choice, please enter a number between 1 and 4.");
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input, please enter a valid number.");
+                scanner.nextLine();
+            }
+        }
+    }
+
     private static int getSearchType(){
         System.out.println("Choose Search type : ");
         System.out.println("1. Search by Title");
