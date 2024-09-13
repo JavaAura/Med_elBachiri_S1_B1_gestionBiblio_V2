@@ -16,15 +16,17 @@ public class UniversityThesis extends Document {
     }
 
     public void borrow() {
-
+        this.borrowed = true;
     }
 
     public void _return() {
-
+        this.borrowed = false;
     }
 
 
     public void display() {
-        System.out.println("Thesis   -> ID: " + getId() + " | Title: " + getTitle() + " | Author: " + getAuthor() + " | Pub Date: " + getPubDate() + " | Num of Pages: " + getNumPages() + " | Degree Program: " + getDegreeProgram());;
+        System.out.println("Thesis   -> ID: " + getId() + " | Title: " + getTitle() + " | Author: " + getAuthor() + " | Pub Date: " + getPubDate() + " | Num of Pages: " + getNumPages() + " | Degree Program: " + getDegreeProgram() + (borrowed ? " | Borrowed" : " | Not Borrowed"));
     }
+    public void cancelReserve (){}
+    public void reserve(){}
 }
