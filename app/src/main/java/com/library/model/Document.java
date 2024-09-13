@@ -2,7 +2,7 @@ package com.library.model;
 
 import java.time.LocalDate;
 
-public abstract class Document implements Borrowable {
+public abstract class Document implements Bookable {
     private String id;
     private String title;
     private String author;
@@ -26,6 +26,13 @@ public abstract class Document implements Borrowable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setBorrowed(boolean brw){
+        this.borrowed = brw;
+    }
+    public boolean getBorrowed(){
+        return this.borrowed;
     }
 
     public String getId(){
