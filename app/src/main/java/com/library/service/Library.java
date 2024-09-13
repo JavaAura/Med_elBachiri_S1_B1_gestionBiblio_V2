@@ -1,8 +1,8 @@
 package com.library.service;
 
-import com.library.daoImpl.BookDaoImpl;
-import com.library.daoImpl.DocumentDaoImpl;
+import com.library.daoImpl.*;
 import com.library.model.*;
+import com.library.ui.DocumentMenu;
 import com.library.ui.MainMenu;
 import com.library.utils.DateUtils;
 import com.library.utils.InputValidator;
@@ -27,10 +27,11 @@ public class Library {
     public void addDocument() {
 //        UI.clear();
         int choice =  getDocType();
+        String title;
         System.out.println("Enter Title: ");
-        String title = scanner.nextLine();
+        title = getCleanStr("Title");
         System.out.println("Enter Author: ");
-        String author = scanner.nextLine();
+        String author = getCleanStr("Author");
         System.out.println("Enter Publication Date (DD/MM/YYYY): ");
         String pubDate = scanner.nextLine();
         while (!DateUtils.isValidDate(pubDate)){
@@ -151,13 +152,73 @@ public class Library {
 
     public void delete(){
         int choice = getDocType();
-        System.out.println("Enter ID: ");
-        String id = scanner.nextLine();
+        String id = getDocId();
         if (InputValidator.isValidNumber(id)){
             docDao.delete(id, choice);
         } else {
             System.out.println("Invalid input, try again.");
         }
+    }
+
+    private static String getDocId(){
+        while (true){
+            System.out.println("Enter ID: ");
+            String id = scanner.nextLine();
+            if (InputValidator.isValidNumber(id)){
+                return id;
+            }
+        }
+    }
+
+    public void borrowDoc(){
+        int choice = getDocType();
+        switch (choice){
+            case 1:
+                String bookID = getDocId();
+                BookDaoImpl bookDao = new BookDaoImpl();
+                Book book = bookDao.get(bookID);
+                book.setBorrowed(true);
+                book.display();
+                docDao.update(book);
+                System.out.println("[+] Book borrowed.");
+                DocumentMenu.display();
+                break;
+            case 2:
+                String magazineID = getDocId();
+                MagazineDaoImpl magazineDao = new MagazineDaoImpl();
+                Magazine magazine = magazineDao.get(magazineID);
+                magazine.setBorrowed(true);
+                docDao.update(magazine);
+                System.out.println("[+] Magazine borrowed.");
+                DocumentMenu.display();
+                break;
+            case 3:
+                String scJouID = getDocId();
+                ScientificJournalDaoImpl scJouDao = new ScientificJournalDaoImpl();
+                ScientificJournal scJou = scJouDao.get(scJouID);
+                scJou.setBorrowed(true);
+                docDao.update(scJou);
+                System.out.println("[+] Journal borrowed.");
+                DocumentMenu.display();
+                break;
+            case 4:
+                String uniThesisID = getDocId();
+                UniversityThesisDaoImpl uniThesisDao = new UniversityThesisDaoImpl();
+                UniversityThesis universityThesis =  uniThesisDao.get(uniThesisID);
+                universityThesis.setBorrowed(true);
+                docDao.update(universityThesis);
+                System.out.println("[+] Thesis borrowed.");
+                DocumentMenu.display();
+                break;
+        }
+    }
+
+    public void returnDoc(){
+        int choice = getDocType();
+        String id = getDocId();
+        String table = (choice == 1) ? "books" : (choice == 2) ? "magazines" : (choice == 3) ? "scientific_journals" : "university_thesis";
+        System.out.println(table);
+
     }
 
     private static int getDocType() {
@@ -177,6 +238,16 @@ public class Library {
                 System.out.println("Invalid input, please enter a valid number.");
                 scanner.nextLine();
             }
+        }
+    }
+
+    private static String getCleanStr(String type){
+        while (true){
+            System.out.println("Enter " + type + ": ");
+            String input = scanner.nextLine();
+            if (InputValidator.isCleanStr(input)){
+                return input;
+            } else System.out.println("[-] Please type a clean " + type);
         }
     }
 
