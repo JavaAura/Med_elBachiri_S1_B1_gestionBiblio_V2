@@ -15,14 +15,16 @@ public class Magazine extends Document {
     }
 
     public void borrow(){
-
+        this.borrowed = true;
     }
 
     public void _return() {
-
+        this.borrowed = false;
     }
 
     public void display() {
-        System.out.println("Magazine -> ID: " + getId() + " | Title: " + getTitle() + " | Author: " + getAuthor() + " | Pub Date: " + getPubDate() + " | Num of Pages: " + getNumPages() + " | Number: " + getNumber());
+        System.out.println("Magazine -> ID: " + getId() + " | Title: " + getTitle() + " | Author: " + getAuthor() + " | Pub Date: " + getPubDate() + " | Num of Pages: " + getNumPages() + " | Number: " + getNumber() + (borrowed ? " | Borrowed" : " | Not Borrowed"));
     }
+    public void cancelReserve (){}
+    public void reserve(){}
 }
