@@ -8,8 +8,18 @@ import java.util.Scanner;
 public class ConsoleUI {
     private static Scanner scan = new Scanner(System.in);
     public static void start(){
-        getAppMode();
-        MainMenu.display();
+        String mode = getAppMode();
+        switch (mode){
+            case "1":
+                MainMenu.display();
+                break;
+            case "2":
+                SubMenu.display();
+                break;
+            default:
+                System.out.println("invalid mode.");
+                break;
+        }
     }
 
     private static String getAppMode(){
