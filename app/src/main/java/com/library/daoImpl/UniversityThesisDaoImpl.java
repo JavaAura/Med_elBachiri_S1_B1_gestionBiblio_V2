@@ -34,6 +34,7 @@ public class UniversityThesisDaoImpl implements UniversityThesisDAO {
 
                 UniversityThesis thesis = new UniversityThesis(title, author, pubDate, numPages, dp);
                 thesis.setId(id);
+                thesis.setBorrowed(resultSet.getBoolean("borrowed"));
                 theses.put("UT" +id, thesis);
             }
 
@@ -58,7 +59,10 @@ public class UniversityThesisDaoImpl implements UniversityThesisDAO {
                 int numPages = resultSet.getInt("num_pages");
                 String dp = resultSet.getString("degree_program");
 
-                return new UniversityThesis(title, author, pubDate, numPages, dp);
+                UniversityThesis uniThe =  new UniversityThesis(title, author, pubDate, numPages, dp);
+                uniThe.setBorrowed(resultSet.getBoolean("borrowed"));
+                uniThe.setId(String.valueOf(resultSet.getInt("id")));
+                return uniThe;
             }
 
         } catch (SQLException e) {
@@ -98,14 +102,15 @@ public class UniversityThesisDaoImpl implements UniversityThesisDAO {
 
     @Override
     public void update(UniversityThesis universityThesis) {
-        String query = "UPDATE university_thesis SET title = ?, author = ?, pub_date = ?, num_pages = ?, degree_program = ? WHERE id = ?";
+        String query = "UPDATE university_thesis SET title = ?, author = ?, pub_date = ?, num_pages = ?, degree_program = ?, borrowed = ? WHERE id = ?";
         try (PreparedStatement preparedStatement = cn.prepareStatement(query)) {
             preparedStatement.setString(1, universityThesis.getTitle());
             preparedStatement.setString(2, universityThesis.getAuthor());
             preparedStatement.setDate(3, Date.valueOf(universityThesis.getPubDate()));
             preparedStatement.setInt(4, universityThesis.getNumPages());
             preparedStatement.setString(5, universityThesis.getDegreeProgram());
-            preparedStatement.setString(6, universityThesis.getId());
+            preparedStatement.setBoolean(6, universityThesis.getBorrowed());
+            preparedStatement.setString(7, universityThesis.getId());
 
             preparedStatement.executeUpdate();
             System.out.println("[+] University Thesis updated.");
