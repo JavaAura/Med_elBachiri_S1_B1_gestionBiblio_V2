@@ -10,12 +10,12 @@ public class ScientificJournal extends Document {
     }
 
     @Override
-    public void borrow(){};
+    public void borrow(){this.borrowed = true;};
     @Override
-    public void _return(){};
+    public void _return(){this.borrowed = false;};
     @Override
     public void display() {
-        System.out.println("Journal  -> ID: " + getId() + " | Title: " + getTitle() + " | Author: " + getAuthor() + " | Pub Date: " + getPubDate() + " | Num of Pages: " + getNumPages() + " | Impact Factor: " + getImpactFactor());;
+        System.out.println("Journal  -> ID: " + getId() + " | Title: " + getTitle() + " | Author: " + getAuthor() + " | Pub Date: " + getPubDate() + " | Num of Pages: " + getNumPages() + " | Impact Factor: " + getImpactFactor() + (borrowed ? " | Borrowed" : " | Not Borrowed"));;
     }
 
     public double getImpactFactor() {
@@ -25,4 +25,6 @@ public class ScientificJournal extends Document {
     public void setImpactFactor(double impactFactor) {
         this.impactFactor = impactFactor;
     }
+    public void cancelReserve (){}
+    public void reserve(){}
 }
