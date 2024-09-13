@@ -1,5 +1,8 @@
 package com.library.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class InputValidator {
 
     public static boolean isValidNumber(String input) {
@@ -19,4 +22,7 @@ public class InputValidator {
         }
     }
 
+    public static boolean isCleanStr(String str){
+        return str.matches(".*\\d.*");
+    }
 }
