@@ -1,4 +1,4 @@
-package main.java.com.library.service;
+package com.library.service;
 
 public class ReservationService {
 }
