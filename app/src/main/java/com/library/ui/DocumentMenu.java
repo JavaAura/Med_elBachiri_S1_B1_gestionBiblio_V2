@@ -18,7 +18,9 @@ public class DocumentMenu {
         System.out.println("2. View All Documents");
         System.out.println("3. Search Document ");
         System.out.println("4. Delete Document");
-        System.out.println("5. Back to Main Menu");
+        System.out.println("5. Borrow Document");
+        System.out.println("6. Return Document");
+        System.out.println("7. Back to Main Menu");
 
         String choice = scanner.nextLine();
         if (!InputValidator.isValidNumber(choice)) {
@@ -44,6 +46,14 @@ public class DocumentMenu {
                 delete();
                 break;
             case "5":
+                UI.clear();
+                borrowDoc();
+                break;
+            case "6":
+                UI.clear();
+                returnDoc();
+                break;
+            case "7":
                 MainMenu.display();
                 return;
             default:
@@ -68,5 +78,11 @@ public class DocumentMenu {
     private static void delete(){
         library.delete();
         display();
+    }
+    private static void borrowDoc(){
+        library.borrowDoc();
+    }
+    private static void returnDoc(){
+        library.returnDoc();
     }
 }
