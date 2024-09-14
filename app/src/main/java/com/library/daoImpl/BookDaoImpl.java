@@ -95,16 +95,16 @@ public class BookDaoImpl implements BookDAO {
     }
 
     public void update(Book book) {
-        String query = "UPDATE books SET title = ?, author = ?, pub_date = ?, num_pages = ?, borrowed = ?, isbn = ? WHERE id = ?";
+        String query = "UPDATE books SET title = ?, author = ?, pub_date = ?, num_pages = ?, isbn = ? WHERE id = ?";
         try (PreparedStatement prestm = cn.prepareStatement(query)) {
             prestm.setString(1, book.getTitle());
             prestm.setString(2, book.getAuthor());
             prestm.setDate(3, Date.valueOf(book.getPubDate()));
             prestm.setInt(4, book.getNumPages());
-            prestm.setBoolean(5, book.getBorrowed());
-            prestm.setString(6, book.getIsbn());
-            prestm.setInt(7, Integer.parseInt(book.getId()));
+            prestm.setString(5, book.getIsbn());
+            prestm.setInt(6, Integer.parseInt(book.getId()));
             prestm.executeUpdate();
+            System.out.println("[+] Book updated successfully.");
         } catch (SQLException e) {
             System.out.println("[-] SQL error: " + e);
         }
