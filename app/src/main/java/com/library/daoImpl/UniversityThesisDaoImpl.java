@@ -113,7 +113,7 @@ public class UniversityThesisDaoImpl implements UniversityThesisDAO {
             preparedStatement.setString(7, universityThesis.getId());
 
             preparedStatement.executeUpdate();
-            System.out.println("[+] University Thesis updated.");
+            System.out.println("[+] University Thesis updated successfully.");
         } catch (SQLException e) {
             System.out.println("[-] SQL error: " + e);
         }

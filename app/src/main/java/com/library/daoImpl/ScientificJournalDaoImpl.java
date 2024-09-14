@@ -104,7 +104,7 @@ public class ScientificJournalDaoImpl implements ScientificJournalDAO {
             prestm.setBoolean(6, scJou.getBorrowed());
             prestm.setString(7, scJou.getId());
             prestm.executeUpdate();
-            System.out.println("[+] Scientific Journal updated.");
+            System.out.println("[+] Scientific Journal updated successfully.");
         } catch (SQLException e) {
             System.out.println("[-] SQL error: " + e);
         }
