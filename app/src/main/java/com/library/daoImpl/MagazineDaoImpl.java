@@ -92,7 +92,7 @@ public class MagazineDaoImpl implements MagazineDAO {
     }
 
     public void update(Magazine magazine) {
-        String query = "UPDATE magazines SET title = ?, author = ?, pub_date = ?, num_pages = ?, number = ?, borrowed = ? WHERE id = ?";
+        String query = "UPDATE magazines SET title = ?, author = ?, pub_date = ?, num_pages = ?, number = ? WHERE id = ?";
         try {
             PreparedStatement preparedStatement = cn.prepareStatement(query);
             preparedStatement.setString(1, magazine.getTitle());
@@ -100,9 +100,9 @@ public class MagazineDaoImpl implements MagazineDAO {
             preparedStatement.setDate(3, Date.valueOf(magazine.getPubDate()));
             preparedStatement.setInt(4, magazine.getNumPages());
             preparedStatement.setInt(5, magazine.getNumber());
-            preparedStatement.setBoolean(6, magazine.getBorrowed());
-            preparedStatement.setInt(7, Integer.parseInt(magazine.getId()));
+            preparedStatement.setInt(6, Integer.parseInt(magazine.getId()));
             preparedStatement.executeUpdate();
+            System.out.println("[+] Magazine updated successfully.");
         } catch (SQLException e) {
             System.out.println("[-] SQL error: " + e);
         }
