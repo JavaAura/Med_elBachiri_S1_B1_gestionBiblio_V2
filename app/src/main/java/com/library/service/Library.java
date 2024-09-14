@@ -28,14 +28,12 @@ public class Library {
 //        UI.clear();
         int choice =  getDocType();
         String title;
-        System.out.println("Enter Title: ");
         title = getCleanStr("Title");
-        System.out.println("Enter Author: ");
         String author = getCleanStr("Author");
         System.out.println("Enter Publication Date (DD/MM/YYYY): ");
         String pubDate = scanner.nextLine();
         while (!DateUtils.isValidDate(pubDate)){
-            System.out.println("Invalid Date, Enter Publication Date (DD/MM/YYYY): ");
+            System.out.println("Invalid Date, Enter Publication Date Like (DD/MM/YYYY): ");
             pubDate = scanner.nextLine();
         }
         LocalDate date = LocalDate.parse(pubDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -162,11 +160,21 @@ public class Library {
 
     private static String getDocId(){
         while (true){
-            System.out.println("Enter ID: ");
+            System.out.println("Enter Document ID: ");
             String id = scanner.nextLine();
             if (InputValidator.isValidNumber(id)){
                 return id;
             }
+        }
+    }
+    private static String getUserID(){
+        while (true){
+            System.out.println("Enter user ID: ");
+            String id = scanner.nextLine();
+            if (InputValidator.isValidNumber(id)){
+                return id;
+            } else System.out.println("Invalid number format, try again");
+
         }
     }
 
@@ -174,40 +182,19 @@ public class Library {
         int choice = getDocType();
         switch (choice){
             case 1:
-                String bookID = getDocId();
-                BookDaoImpl bookDao = new BookDaoImpl();
-                Book book = bookDao.get(bookID);
-                book.setBorrowed(true);
-                book.display();
-                docDao.update(book);
-                System.out.println("[+] Book borrowed.");
+                docDao.borrow(Integer.parseInt(getDocId()), getUserType(), Integer.parseInt(getUserID()), "book");
                 DocumentMenu.display();
                 break;
             case 2:
-                String magazineID = getDocId();
-                MagazineDaoImpl magazineDao = new MagazineDaoImpl();
-                Magazine magazine = magazineDao.get(magazineID);
-                magazine.setBorrowed(true);
-                docDao.update(magazine);
-                System.out.println("[+] Magazine borrowed.");
+                docDao.borrow(Integer.parseInt(getDocId()), getUserType(), Integer.parseInt(getUserID()), "magazine");
                 DocumentMenu.display();
                 break;
             case 3:
-                String scJouID = getDocId();
-                ScientificJournalDaoImpl scJouDao = new ScientificJournalDaoImpl();
-                ScientificJournal scJou = scJouDao.get(scJouID);
-                scJou.setBorrowed(true);
-                docDao.update(scJou);
-                System.out.println("[+] Journal borrowed.");
+                docDao.borrow(Integer.parseInt(getDocId()), getUserType(), Integer.parseInt(getUserID()), "scientific_journal");
                 DocumentMenu.display();
                 break;
             case 4:
-                String uniThesisID = getDocId();
-                UniversityThesisDaoImpl uniThesisDao = new UniversityThesisDaoImpl();
-                UniversityThesis universityThesis =  uniThesisDao.get(uniThesisID);
-                universityThesis.setBorrowed(true);
-                docDao.update(universityThesis);
-                System.out.println("[+] Thesis borrowed.");
+                docDao.borrow(Integer.parseInt(getDocId()), getUserType(), Integer.parseInt(getUserID()), "university_thesis");
                 DocumentMenu.display();
                 break;
         }
@@ -216,9 +203,9 @@ public class Library {
     public void returnDoc(){
         int choice = getDocType();
         String id = getDocId();
-        String table = (choice == 1) ? "books" : (choice == 2) ? "magazines" : (choice == 3) ? "scientific_journals" : "university_thesis";
-        System.out.println(table);
-
+        String docType = (choice == 1) ? "books" : (choice == 2) ? "magazines" : (choice == 3) ? "scientific_journals" : "university_thesis";
+        docDao.returnDocument(Integer.parseInt(id), docType);
+        DocumentMenu.display();
     }
 
     private static int getDocType() {
@@ -241,6 +228,66 @@ public class Library {
         }
     }
 
+    public void update(){
+        int choice = getDocType();
+        String docId = getDocId();
+        String title = getCleanStr("New Title");
+        String author = getCleanStr("New Author");
+        System.out.println("Enter New Publication Date (DD/MM/YYYY): ");
+        String pubDate = scanner.nextLine();
+        while (!DateUtils.isValidDate(pubDate)){
+            System.out.println("Invalid Date, Enter Publication Date Like (DD/MM/YYYY): ");
+            pubDate = scanner.nextLine();
+        }
+        LocalDate date = LocalDate.parse(pubDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        System.out.println("Enter New number of pages: ");
+        String numPages = scanner.nextLine();
+
+
+        try {
+            int pages = Integer.parseInt(numPages);
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter New ISBN: ");
+                    String isbn = scanner.nextLine();
+                    Book book = new Book(title, author, date, pages, isbn);
+                    book.setId(docId);
+                    docDao.update(book);
+                    break;
+                case 2:
+                    System.out.println("Enter New Number: ");
+                    String number = scanner.nextLine();
+                    if (InputValidator.isValidNumber(number)){
+                        Magazine magazine = new Magazine(title, author, date, pages, Integer.parseInt(number));
+                        magazine.setId(docId);
+                        docDao.update(magazine);
+                    } else System.out.println("Invalid number format, Try again.");
+                    break;
+                case 3:
+                    System.out.println("Enter New Impact Factor: ");
+                    String impactFactor = scanner.nextLine();
+                    if (InputValidator.isValidDouble(impactFactor)){
+                        ScientificJournal scJou = new ScientificJournal(title, author, date, pages, Double.parseDouble(impactFactor));
+                        scJou.setId(docId);
+                        docDao.update(scJou);
+                    } else System.out.println("Invalid New number format, Try again.");
+                    break;
+                case 4:
+                    System.out.println("Enter New Degree Program : ");
+                    String degreeProgram = scanner.nextLine();
+                    UniversityThesis uniThe = new UniversityThesis(title, author, date,pages, degreeProgram);
+                    uniThe.setId(docId);
+                    docDao.update(uniThe);
+                    break;
+
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number format, Try again.");
+        }
+
+    }
+
     private static String getCleanStr(String type){
         while (true){
             System.out.println("Enter " + type + ": ");
@@ -259,5 +306,24 @@ public class Library {
         System.out.println("4. Back to Home");
         return scanner.nextInt();
     }
+
+    private static String getUserType() {
+        while (true) {
+            System.out.println("Enter User Type: ");
+            System.out.println("1. Student");
+            System.out.println("2. Professor");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    return "student";
+                case "2":
+                    return "professor";
+                default:
+                    System.out.println("Invalid choice, try again.");
+            }
+        }
+    }
+
 
 }
