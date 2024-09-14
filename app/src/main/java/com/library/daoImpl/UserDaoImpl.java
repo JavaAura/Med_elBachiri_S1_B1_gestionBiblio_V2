@@ -4,7 +4,12 @@ import com.library.dao.UserDAO;
 import com.library.model.Professor;
 import com.library.model.Student;
 import com.library.model.User;
+import com.library.utils.db.DbConnection;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,6 +18,7 @@ public class UserDaoImpl implements UserDAO {
     private static StudentDaoImpl studentDao = new StudentDaoImpl();
     private static ProfessorDaoImpl professorDao = new ProfessorDaoImpl();
     private static ArrayList<User> users = new ArrayList<User>();
+    private static Connection cn = DbConnection.connect();
 
     @Override
     public ArrayList<User> getAll() {
@@ -51,5 +57,20 @@ public class UserDaoImpl implements UserDAO {
             case 2:
                 professorDao.delete(id);
         }
+    }
+
+    public boolean userExist(int id){
+        String query = "SELECT FROM users WHERE id = ?";
+        try (PreparedStatement stm = cn.prepareStatement(query)) {
+            stm.setInt(1, id);
+            try (ResultSet resultSet = stm.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e){
+            System.out.println("SQL error : " + e);
+        }
+        return false;
     }
 }
