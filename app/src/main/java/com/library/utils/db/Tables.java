@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Tables {
-    // create all tables at once
+    // Create all tables at once
     public static void create(Connection connection) {
         create_documents_table(connection);
         create_books_table(connection);
@@ -15,6 +15,8 @@ public class Tables {
         create_users_table(connection);
         create_students_table(connection);
         create_professors_table(connection);
+        create_reservations_table(connection);
+        create_borrows_table(connection);
     }
 
     private static void dynamic_create_table(Connection con, String tableName, String columns) {
@@ -49,28 +51,28 @@ public class Tables {
     private static void create_books_table(Connection cn) {
         dynamic_create_table(cn,
                 "books",
-                "isbn TEXT, document_id INT REFERENCES documents(id)) INHERITS (documents"
+                "isbn TEXT, document_id INT REFERENCES documents(id) ON DELETE CASCADE"
         );
     }
 
     private static void create_magazines_table(Connection cn) {
         dynamic_create_table(cn,
                 "magazines",
-                "number INT, document_id INT REFERENCES documents(id)) INHERITS (documents"
+                "number INT, document_id INT REFERENCES documents(id) ON DELETE CASCADE"
         );
     }
 
     private static void create_scientific_journals_table(Connection cn) {
         dynamic_create_table(cn,
                 "scientific_journals",
-                "impact_factor BIGINT, document_id INT REFERENCES documents(id)) INHERITS (documents"
+                "impact_factor BIGINT, document_id INT REFERENCES documents(id) ON DELETE CASCADE"
         );
     }
 
     private static void create_university_thesis_table(Connection cn) {
         dynamic_create_table(cn,
                 "university_thesis",
-                "degree_program TEXT, document_id INT REFERENCES documents(id)) INHERITS (documents"
+                "degree_program TEXT, document_id INT REFERENCES documents(id) ON DELETE CASCADE"
         );
     }
 
@@ -84,14 +86,28 @@ public class Tables {
     private static void create_students_table(Connection cn) {
         dynamic_create_table(cn,
                 "students",
-                "integration_date DATE, user_id INT REFERENCES users(id)) INHERITS (users"
+                "integration_date DATE, user_id INT REFERENCES users(id) ON DELETE CASCADE"
         );
     }
 
     private static void create_professors_table(Connection cn) {
         dynamic_create_table(cn,
                 "professors",
-                "department TEXT, user_id INT REFERENCES users(id)) INHERITS (users"
+                "department TEXT, user_id INT REFERENCES users(id) ON DELETE CASCADE"
+        );
+    }
+
+    private static void create_reservations_table(Connection cn) {
+        dynamic_create_table(cn,
+                "reservations",
+                "user_id INT, document_id INT, doc_type TEXT, user_type TEXT, reservation_date DATE"
+        );
+    }
+
+    private static void create_borrows_table(Connection cn) {
+        dynamic_create_table(cn,
+                "borrows",
+                "user_id INT, document_id INT, borrow_date DATE, doc_type TEXT, user_type TEXT"
         );
     }
 }
