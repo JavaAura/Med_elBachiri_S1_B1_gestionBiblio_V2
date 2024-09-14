@@ -23,6 +23,6 @@ public class InputValidator {
     }
 
     public static boolean isCleanStr(String str){
-        return str.matches(".*\\d.*");
+        return !str.matches(".*\\d.*");
     }
 }
