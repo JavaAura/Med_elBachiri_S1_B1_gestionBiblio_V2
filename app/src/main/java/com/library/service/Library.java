@@ -182,19 +182,19 @@ public class Library {
         int choice = getDocType();
         switch (choice){
             case 1:
-                docDao.borrow(Integer.parseInt(getDocId()), getUserType(), Integer.parseInt(getUserID()), "book");
+                docDao.borrow(Integer.parseInt(getDocId()), getUserType(), Integer.parseInt(getUserID()), "book", true);
                 DocumentMenu.display();
                 break;
             case 2:
-                docDao.borrow(Integer.parseInt(getDocId()), getUserType(), Integer.parseInt(getUserID()), "magazine");
+                docDao.borrow(Integer.parseInt(getDocId()), getUserType(), Integer.parseInt(getUserID()), "magazine", true);
                 DocumentMenu.display();
                 break;
             case 3:
-                docDao.borrow(Integer.parseInt(getDocId()), getUserType(), Integer.parseInt(getUserID()), "scientific_journal");
+                docDao.borrow(Integer.parseInt(getDocId()), getUserType(), Integer.parseInt(getUserID()), "scientific_journal", true);
                 DocumentMenu.display();
                 break;
             case 4:
-                docDao.borrow(Integer.parseInt(getDocId()), getUserType(), Integer.parseInt(getUserID()), "university_thesis");
+                docDao.borrow(Integer.parseInt(getDocId()), getUserType(), Integer.parseInt(getUserID()), "university_thesis", true);
                 DocumentMenu.display();
                 break;
         }

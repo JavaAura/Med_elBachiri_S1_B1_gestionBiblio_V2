@@ -31,7 +31,6 @@ public class MainMenu {
                     DocumentMenu.display();
                     break;
                 case "2":
-//                UI.clear();
                     UserMenu.display();
                     break;
                 case "3":

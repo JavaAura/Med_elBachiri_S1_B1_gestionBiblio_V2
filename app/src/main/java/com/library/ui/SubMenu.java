@@ -40,7 +40,7 @@ public class SubMenu {
                 break;
             case "4":
                 UI.clear();
-                System.out.println("soon");
+                ReservationMenu.display();
                 display();
                 break;
             case "5":
